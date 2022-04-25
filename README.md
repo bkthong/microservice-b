@@ -30,4 +30,4 @@ $ docker rm test
 - If using M1 ARM processor machine to build the image, it cannot run on fargate by default:
    "exec format error" will appear in the logs of the task on ecs that tries to run the image
 - Easiest way is to build on amd64 and push to quay.io
-- Dockerfile updated to include arm64 arch. So no more problems building on M1 chip on Macbook
+- Dockerfile updated to include amd64 arch via --platform. So no more problems building on M1 chip on Macbook
