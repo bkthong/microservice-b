@@ -7,7 +7,7 @@ ADD src/ .
 
 # Update file ownership to user and group 1001
 USER root
-RUN yum -y install bind-utils iputils && yum clean all
+RUN yum -y install bind-utils iputils iproute procps-ng && yum clean all
 RUN chown -R 1001:0 .
 
 # Install dependencies as user 1001
