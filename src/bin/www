@@ -12,7 +12,8 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+/* Changed to default to 8080 as s2i uses 8080 by default */
+var port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
 
 /**

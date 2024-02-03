@@ -1,6 +1,6 @@
 FROM --platform=linux/amd64 registry.access.redhat.com/ubi8/nodejs-16:latest
 
-EXPOSE 3000
+EXPOSE 8080
 
 # Add source code to the workding directory of the image
 ADD src/ .
