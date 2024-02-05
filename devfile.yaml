@@ -1,3 +1,7 @@
+# NOTE: oc delete -f kubernetes/ to reverse "odo deploy" deployment to k8s
+
+
+commands:
 # ============================================================================
 # OUTER LOOP TASKS
 # Below commands are for odo deploy that executes "deploy" phase which
@@ -8,24 +12,11 @@
 # - The composite command then calls the other two commands declared with id of 
 #   "build-my-image" and "deploy-to-my-k8s"
 # ============================================================================
-commands:
-# This command is part of the composite command declared further below
-# When this command is invoked, the associated component is triggered
 
-- id: build-my-image
-  apply:
-    component: image-build
 
-# This command is part oof the composite command declared further below
-# When this command is invoked, the associated component is triggered
 
-- id: deploy-to-my-k8s
-  apply:
-    component: kubernetes-deploy
-
-# - This command is a composite command, which invokes the above declared 
-#   commands.
-# - It is of type "deploy" and set as the deafult for deploy type commands
+# - This command is a composite command, which invokes commands declared below
+# - It is of type "deploy" and set as the default for deploy type commands
 # - This means that this command is invoked when "odo deploy" is run
 - id: build-and-deploy-my-app
   composite:
@@ -35,6 +26,21 @@ commands:
     group:
       kind: deploy
       isDefault: true
+
+# This command is part of the composite command declared above
+# When this command is invoked, the associated component is triggered
+
+- id: build-my-image
+  apply:
+    component: image-build
+
+# This command is part oof the composite command declared above
+# When this command is invoked, the associated component is triggered
+
+- id: deploy-to-my-k8s
+  apply:
+    component: kubernetes-deploy
+
 
 
 # ============================================================================
