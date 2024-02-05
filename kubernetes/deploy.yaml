@@ -51,10 +51,11 @@ metadata:
   name: msb
 spec:
   rules:
-  - http:
+  - host: msb-app.apps.ocp4.example.com
+    http:
       paths:
       - path: /
-        pathType: Exact
+        pathType: Prefix
         backend:
           service:
             name: msb
