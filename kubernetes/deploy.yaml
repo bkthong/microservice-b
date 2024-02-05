@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,3 +27,36 @@ spec:
         resources: {}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: msb
+  name: msb
+spec:
+  ports:
+  - name: http-node
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: msb
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: msb
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Exact
+        backend:
+          service:
+            name: msb
+            port:
+              number: 8080

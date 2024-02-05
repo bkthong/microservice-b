@@ -89,7 +89,7 @@ components:
 # - The command with the id "deploy-k8s" is associated with this component
 - name: kubernetes-deploy
   kubernetes:
-    uri: deploy.yaml
+    uri: kubernetes/deploy.yaml
 
 # - Inner Loop component
 # - A component of type "container" is required for devfiles.
