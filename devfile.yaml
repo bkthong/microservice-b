@@ -1,0 +1,132 @@
+# ============================================================================
+# OUTER LOOP TASKS
+# Below commands are for odo deploy that executes "deploy" phase which
+# represents the outer loop stuff.
+# - Our deploy phase default command is a composite command with the id 
+#   "build-and-deploy-myapp". It is a command for the deploy phase as the "kind"
+#   is set to deploy and it is the default command for that phase.
+# - The composite command then calls the other two commands declared with id of 
+#   "build-my-image" and "deploy-to-my-k8s"
+# ============================================================================
+commands:
+# This command is part of the composite command declared further below
+# When this command is invoked, the associated component is triggered
+
+- id: build-my-image
+  apply:
+    component: image-build
+
+# This command is part oof the composite command declared further below
+# When this command is invoked, the associated component is triggered
+
+- id: deploy-to-my-k8s
+  apply:
+    component: kubernetes-deploy
+
+# - This command is a composite command, which invokes the above declared 
+#   commands.
+# - It is of type "deploy" and set as the deafult for deploy type commands
+# - This means that this command is invoked when "odo deploy" is run
+- id: build-and-deploy-my-app
+  composite:
+    commands:
+    - build-my-image
+    - deploy-to-my-k8s
+    group:
+      kind: deploy
+      isDefault: true
+
+
+# ============================================================================
+# INNER LOOP TASKS
+# Below commands are for odo dev that executes "build" and "run" phases
+# In odo dev, the source code is mounted to the container so that developers
+# can make changes and odo will sync the changes and rebuild as neccessary
+# ============================================================================
+# 
+# "build" phase of odo
+# We use the build phase to install the required packages in the container
+- id: install-my-packages
+  exec:
+    commandLine: npm install
+    component: msb-container
+    group:
+      isDefault: true
+      kind: build
+    workingDir: ${PROJECT_SOURCE}/src
+
+# "run" phase of odo dev which executes after the "build" phase
+# Start up the nodejs app in the container
+- id: start-my-app
+  exec:
+    commandLine: npm start
+    component: msb-container
+    group:
+      isDefault: true
+      kind: run
+    workingDir: ${PROJECT_SOURCE}/src
+  
+components:
+# - OuterLoop component
+# - This component is of type "image-build"
+# - It builds the image based on the specified 
+#   Dockerfile and build context
+# - The command with the id "build-image" is associated with this
+#   compoinent
+- name: image-build
+  image:
+    imageName: quay.io/bkthong/serviceb:odo
+    dockerfile:
+      uri: Dockerfile
+      buildContext: .
+      rootRequired: false
+
+# - Outer Loop component
+# - This component is of type "kubernetes"
+# - It deploys stuff to OpenShift based on the YAML provided
+# - Must already be logged into openshift with odo login or oc login
+#   for this deplyment to work
+# - The command with the id "deploy-k8s" is associated with this component
+- name: kubernetes-deploy
+  kubernetes:
+    uri: deploy.yaml
+
+# - Inner Loop component
+# - A component of type "container" is required for devfiles.
+# - It is normally used in the "odo dev"  where a container
+#   is started and the source code mounted in for 'dynamic'
+#   development , change code and odo redploys to the container
+# - For DO288 syllabus, we are not covering odo dev in detail
+- container:
+    args:
+    - tail
+    - -f
+    - /dev/null
+    endpoints:
+    - name: http-node
+      targetPort: 8080
+    - exposure: none
+      name: debug
+      targetPort: 5858
+    env:
+    - name: DEBUG_PORT
+      value: "5858"
+    image: registry.access.redhat.com/ubi8/nodejs-16:latest
+    memoryLimit: 1024Mi
+    mountSources: true
+  name: msb-container
+
+# Metadata stuff
+metadata:
+  description: microservice-b description
+  displayName: microservice-b
+  icon: https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg
+  language: JavaScript
+  name: msb
+  projectType: Node.js
+  tags:
+  - Node.js
+  - Express
+  - ubi8
+  version: 2.1.1
+schemaVersion: 2.2.0

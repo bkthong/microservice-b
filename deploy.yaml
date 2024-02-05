@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: msb
+  name: msb
+spec:
+  selector:
+    matchLabels:
+      app: msb
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: msb
+    spec:
+      containers:
+      - image: quay.io/bkthong/serviceb:odo
+        imagePullPolicy: IfNotPresent
+        name: msb
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
