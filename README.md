@@ -1,6 +1,15 @@
 # microservice-b
 nodejs mock microservice for demos on containers
 
+---
+[20240203]
+Changes made for do-2884.12 syllabus
+- ive updated the code to use **port 8080 instead of 3000**
+- Renamed Containerfile **back to Dockerfile** as OCP web console does not 
+    to Containerfile naming**
+- **devfile.yaml** added for odo demos
+
+---
 
 - Initial scaffolding via express generator:
 ```
@@ -31,3 +40,5 @@ $ docker rm test
    "exec format error" will appear in the logs of the task on ecs that tries to run the image
 - Easiest way is to build on amd64 and push to quay.io
 - Dockerfile updated to include amd64 arch via --platform. So no more problems building on M1 chip on Macbook
+
+
