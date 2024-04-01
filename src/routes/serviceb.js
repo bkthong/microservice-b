@@ -7,7 +7,7 @@ var hostname = os.hostname();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('<div style="font-family: Verdana ; font-size: 28">Hello from serviceb (v1.4) : ' +  hostname + '</div>\n');
+  res.send('<div style="font-family: Verdana ; font-size: 28">Hello from serviceb (v1.6) : ' +  hostname + '</div>\n');
 });
 
 module.exports = router;
