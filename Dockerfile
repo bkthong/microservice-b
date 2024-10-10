@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 registry.access.redhat.com/ubi8/nodejs-16:latest
+FROM --platform=linux/amd64 registry.access.redhat.com/ubi8/nodejs-16-minimal:latest
 
 EXPOSE 8080
 
@@ -7,9 +7,9 @@ ADD src/ .
 
 # Update file ownership to user and group 1001
 USER root
-RUN yum -y install bind-utils iputils iproute procps-ng && yum clean all
+RUN microdnf -y install bind-utils iputils iproute procps-ng && microdnf clean all
 RUN chown -R 1001:0 .
-RUN chmod -R g=u .
+RUN chmod -R g=rwX .
 
 # Install dependencies as user 1001
 USER 1001 
