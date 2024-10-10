@@ -1,0 +1,7 @@
+oc create deployment mmm quay.io/bkthong/serviceb:1.6 
+--> because tag is not latest (1.6 in this case), the image pull policy is IfNotPresent
+- this results in mme getting the older image if the older version of the 1.6 tag was present
+  already in the cluster
+  - it does not check the shasum again
+- NEED to change this to Always, so that it double-checks the checksum and reddownloads if there is a 
+  newer version
