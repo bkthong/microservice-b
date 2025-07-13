@@ -30,7 +30,7 @@ var hostname = os.hostname();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'microservice-b (v1.6) : ' +  hostname , details: JSON.stringify(results) });
+  res.render('index', { title: 'microservice-b (v1.7) : ' +  hostname , details: JSON.stringify(results) });
 });
 
 module.exports = router;

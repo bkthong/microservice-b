@@ -14,7 +14,7 @@ RUN chmod -R g=rwX .
 # Install dependencies as user 1001
 USER 1001 
 RUN npm install
-
+RUN npm cache clean --force  #to solve permission errors
 # Execute unit tests
 # -- blank for now --
 

@@ -9,6 +9,12 @@ Changes made for do-2884.12 syllabus
     to Containerfile naming**
 - **devfile.yaml** added for odo demos
 
+[20250713]
+- Still had permissions erros when deployed to ocp
+- Updated Dockerfile to clear npm cache
+    RUN npm cache clean --force 
+- Updatingt o 1.7 and latest
+
 ---
 
 - Initial scaffolding via express generator:
